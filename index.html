@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#070918">
+<title>SONOSPHÈRE • Instrument optique 3D</title>
+<style>
+:root{color-scheme:dark;--mint:#79ffe2;--violet:#9b79ff;--ink:#eaf4ff;--muted:#9baac6;--edge:rgba(196,216,255,.16)}
+*{box-sizing:border-box}html,body{height:100%;width:100%;margin:0;overflow:hidden;background:#060917;font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent}body{user-select:none;-webkit-user-select:none}
+#scene{position:fixed;inset:0;display:block;width:100%;height:100%;touch-action:none;cursor:crosshair}#grain{position:fixed;inset:0;pointer-events:none;opacity:.15;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.17'/%3E%3C/svg%3E");mix-blend-mode:screen}
+.top{position:fixed;top:0;left:0;right:0;pointer-events:none;padding:clamp(18px,4.3vw,38px) clamp(18px,5vw,64px);display:flex;justify-content:space-between;gap:15px;align-items:flex-start;z-index:3}
+.brand{display:flex;align-items:center;gap:12px}.mark{height:36px;width:36px;border-radius:50%;border:1px solid rgba(118,245,220,.55);box-shadow:0 0 20px #46efde26,inset 0 0 15px #9272ef26;position:relative;flex:none}.mark:before,.mark:after{content:"";position:absolute;inset:5px;border:1px solid #77ffe5ae;border-radius:50%;transform:rotate(42deg) scaleX(.39)}.mark:after{transform:rotate(-42deg) scaleX(.39);border-color:#b49aff}.name{font-size:15px;letter-spacing:.22em;font-weight:780;line-height:1.2}.edition{font-size:10px;font-weight:700;letter-spacing:.18em;color:#8fa5c6;margin-top:5px}.status{text-align:right;margin-top:3px}.status-main{font-size:10px;letter-spacing:.15em;color:#bdd2e3;font-weight:750;display:flex;gap:7px;align-items:center;justify-content:flex-end}.status-main:before{content:"";height:6px;width:6px;border-radius:50%;background:#ffbc7c;box-shadow:0 0 11px #ffbc7c}.status.active .status-main:before{background:#76ffc9;box-shadow:0 0 11px #76ffc9}.status-sub{font-size:11px;color:#8b9ab7;margin-top:6px;letter-spacing:.04em}
+.middle-label{position:fixed;pointer-events:none;left:50%;top:54%;transform:translate(-50%,-50%);text-align:center;z-index:2;width:min(400px,90vw);transition:opacity .4s,top .4s}.middle-label.quiet{opacity:.36;top:70%}.eyebrow{font-size:10px;font-weight:750;letter-spacing:.31em;color:#90ffeb;text-shadow:0 0 25px #65ffdcaa}.hint-title{font-weight:590;font-size:clamp(18px,2.7vw,28px);margin-top:9px;letter-spacing:-.035em;text-shadow:0 4px 28px #060917aa}.hint-sub{color:#9fb3d1;font-size:12px;line-height:1.6;margin-top:8px}
+.note{position:fixed;top:21%;right:6%;pointer-events:none;text-align:right;color:#b8c7e8;opacity:.8}.note b{display:block;font-weight:440;font-size:clamp(24px,3vw,42px);color:#dceeff;letter-spacing:.02em}.note small{font-size:10px;letter-spacing:.18em;font-weight:700;color:#76f5da}
+.bottom{position:fixed;bottom:0;left:0;right:0;padding:0 18px max(24px,env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:center;z-index:5;pointer-events:none}.micro{font-size:10px;letter-spacing:.18em;color:#8195b6;text-align:center;margin-bottom:14px;pointer-events:none}
+.dock{pointer-events:auto;display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--edge);background:linear-gradient(135deg,#1a2140c9,#0a112ac9);box-shadow:0 16px 54px #0008,0 1px 1px #ffffff12 inset;backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);border-radius:22px;max-width:calc(100vw - 20px)}
+.group{display:flex;align-items:center;gap:5px}.divider{height:35px;width:1px;background:#b9c7ff2b;margin:0 3px}.mode,.icon-btn{border:1px solid transparent;appearance:none;color:#b9c8e2;background:transparent;font:inherit;cursor:pointer;transition:background .2s,color .2s,border .2s,transform .12s;white-space:nowrap}.mode:active,.icon-btn:active{transform:scale(.95)}.mode{font-size:10px;font-weight:800;letter-spacing:.095em;border-radius:12px;padding:12px 12px}.mode.active{background:#8f82ff22;border-color:#b1a5ff5b;color:#eef0ff;box-shadow:inset 0 0 20px #8379ff1a}.mode:hover,.icon-btn:hover{background:#ffffff12}.icon-btn{height:42px;min-width:42px;padding:0 12px;font-size:18px;border-radius:12px;display:grid;place-items:center}.icon-btn.selected{background:#66eac022;color:#93ffdc;border-color:#78ffdd56}.vol{display:flex;align-items:center;gap:8px;color:#92a6c1;padding:0 4px}.vol-label{font-size:14px}.vol input{appearance:none;-webkit-appearance:none;width:76px;height:4px;border-radius:10px;background:linear-gradient(90deg,#83ffe0,#997afa);outline:none;cursor:pointer}.vol input::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;border-radius:50%;width:14px;height:14px;background:#e6fff8;border:3px solid #79e6d3;box-shadow:0 0 9px #7afae9}.vol input::-moz-range-thumb{border-radius:50%;width:10px;height:10px;background:#e6fff8;border:2px solid #79e6d3}
+.accessible{position:absolute;left:-9999px;top:-9999px}.kbd{font-size:10px;color:#8a97b4;letter-spacing:.04em;margin-top:9px;text-align:center}
+@media(max-width:650px){.top{padding:23px 20px}.name{font-size:13px}.mark{width:31px;height:31px}.edition{font-size:9px}.status-sub{display:none}.status-main{font-size:9px;max-width:130px}.middle-label{top:66%}.middle-label.quiet{top:76%;opacity:.28}.hint-title{font-size:21px}.hint-sub{font-size:11px}.note{top:16%;right:22px}.note b{font-size:24px}.note small{font-size:9px}.bottom{padding:0 10px max(18px,env(safe-area-inset-bottom))}.dock{gap:5px;padding:8px 8px;border-radius:19px}.mode{font-size:9px;padding:10px 8px;letter-spacing:.015em}.icon-btn{height:38px;min-width:37px;padding:0 7px;font-size:17px}.divider{margin:0 1px;height:29px}.vol{gap:5px;padding:0 3px}.vol input{width:48px}.micro{margin-bottom:12px;font-size:9px}.kbd{display:none}}
+@media(max-width:380px){.vol{display:none}.mode{padding:9px 7px;font-size:9px}.middle-label{top:68%}.micro{font-size:8px}}
+@media(max-height:610px){.middle-label{top:70%}.middle-label.quiet{opacity:0}.note{display:none}.micro{display:none}}
+</style>
+</head>
+<body>
+<canvas id="scene" aria-label="Instrument interactif : sphère et formes 3D animées. Touchez ou glissez pour jouer des notes originales."></canvas>
+<div id="grain"></div>
+<header class="top"><div class="brand"><div class="mark"></div><div><div class="name">SONOSPHÈRE</div><div class="edition">LABORATOIRE SONORE · 3D</div></div></div><div class="status" id="status"><div class="status-main" id="statusMain">SON PRÊT À JOUER</div><div class="status-sub" id="statusSub">Première touche pour activer l’audio</div></div></header>
+<div class="note" aria-live="off"><small id="noteMode">MODE ORBITE</small><b id="noteName">∞</b></div>
+<div class="middle-label" id="hint"><div class="eyebrow">UNIVERS SENSIBLE</div><div class="hint-title">Dessine la musique.</div><div class="hint-sub">Touche, glisse, tourne. Le même geste n’a jamais exactement le même son.</div></div>
+<footer class="bottom"><div class="micro">✦ LE SON ÉVOLUE AVEC LE TEMPS, LE MOUVEMENT ET LES FORMES ✦</div><div class="dock" role="group" aria-label="Commandes de l'instrument"><div class="group" id="modes"><button class="mode active" data-mode="0" aria-pressed="true">ORBITE</button><button class="mode" data-mode="1" aria-pressed="false">CRISTAL</button><button class="mode" data-mode="2" aria-pressed="false">PULSE</button></div><span class="divider"></span><button class="icon-btn" id="auto" title="Activer ou arrêter la mélodie automatique" aria-label="Mélodie automatique" aria-pressed="false">♫</button><button class="icon-btn" id="pause" title="Arrêter ou reprendre les mouvements" aria-label="Pause animation" aria-pressed="false">⏸</button><span class="divider"></span><div class="vol"><span class="vol-label">◖</span><input id="volume" type="range" min="0" max="100" value="58" aria-label="Volume sonore"></div></div><div class="kbd">Souris / doigt : jouer et tourner · Espace : note · Touches ← → : rotation</div></footer>
+<script>
+(()=>{
+'use strict';
+const canvas=document.getElementById('scene'),c=canvas.getContext('2d',{alpha:false});
+const hint=document.getElementById('hint'),status=document.getElementById('status'),statusMain=document.getElementById('statusMain'),statusSub=document.getElementById('statusSub'),noteName=document.getElementById('noteName'),noteMode=document.getElementById('noteMode');
+const modeButtons=[...document.querySelectorAll('.mode')],autoButton=document.getElementById('auto'),pauseButton=document.getElementById('pause'),volumeControl=document.getElementById('volume');
+const TAU=Math.PI*2,clamp=(v,a,b)=>Math.min(b,Math.max(a,v)),mix=(a,b,t)=>a+(b-a)*t;
+let w=innerWidth,h=innerHeight,dpr=1,centerX,centerY,unit;
+let t=0,last=performance.now(),rotation={x:-.22,y:.29,z:.04},velocity={x:0,y:0},isPaused=false,mode=0,autoOn=false,volume=.58;
+let activePointers=new Map(),playCount=0,firstTouch=false,lastAuto=0,globalBeat=0;
+let pulses=[],sparkles=[],ripples=[],starfield=[];
+let actx=null,master=null,echo=null,feedback=null,dry=null,lowpass=null;
+const MODES=[{name:'ORBITE',root:164.81,scale:[0,2,4,7,9,11],hue:175,wave:'sine'},
+{name:'CRISTAL',root:220,scale:[0,2,5,7,9,12],hue:258,wave:'triangle'},
+{name:'PULSE',root:130.81,scale:[0,3,5,7,10,12],hue:320,wave:'sawtooth'}];
+const NOTENAMES=['Do','Do♯','Ré','Ré♯','Mi','Fa','Fa♯','Sol','Sol♯','La','La♯','Si'];
+function random(a=0,b=1){return a+Math.random()*(b-a)}
+function resize(){w=innerWidth;h=innerHeight;dpr=Math.min(devicePixelRatio||1,w<740?1.7:2);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);canvas.style.width=w+'px';canvas.style.height=h+'px';c.setTransform(dpr,0,0,dpr,0,0);centerX=w*.5;centerY=h*(w<650?.42:.47);unit=Math.min(w*.205,h*.195,183);if(w<650)unit=Math.min(w*.187,h*.195,128);starfield=Array.from({length:w<650?78:150},()=>({x:Math.random()*w,y:Math.random()*h,r:random(.3,1.6),phase:random(0,TAU),depth:random(.2,1)}));}
+addEventListener('resize',resize);resize();
+function buildAudio(){if(actx)return;
+const AC=window.AudioContext||window.webkitAudioContext;if(!AC){statusMain.textContent='AUDIO NON DISPONIBLE';return;}
+try{actx=new AC();master=actx.createGain();master.gain.value=volume*.68;const limiter=actx.createDynamicsCompressor();limiter.threshold.value=-21;limiter.knee.value=20;limiter.ratio.value=5;limiter.attack.value=.004;limiter.release.value=.24;master.connect(limiter);limiter.connect(actx.destination);
+dry=actx.createGain();dry.gain.value=.87;dry.connect(master);
+echo=actx.createDelay(1);echo.delayTime.value=.245;feedback=actx.createGain();feedback.gain.value=.26;lowpass=actx.createBiquadFilter();lowpass.type='lowpass';lowpass.frequency.value=1950;echo.connect(feedback);feedback.connect(lowpass);lowpass.connect(echo);const wet=actx.createGain();wet.gain.value=.21;echo.connect(wet);wet.connect(master);
+status.classList.add('active');statusMain.textContent='AUDIO ACTIVÉ';statusSub.textContent='Synthèse sonore en temps réel';}catch(e){console.warn('Audio indisponible',e);statusMain.textContent='TOUCHE POUR ACTIVER';}}
+function unlockAudio(){buildAudio();if(actx&&actx.state==='suspended')actx.resume().catch(()=>{});}
+function pitchName(freq){const midi=Math.round(69+12*Math.log2(freq/440));const name=NOTENAMES[(midi%12+12)%12];return name+' · '+Math.floor(midi/12-1)}
+function playNote(nx,ny,motion=0,quiet=false){if(!actx)return;const now=actx.currentTime+.008;const cfg=MODES[mode];
+// The moving geometry, time and previous notes deliberately affect the pitch.
+const phi=Math.atan2(ny-.5,nx-.5),rad=Math.hypot(nx-.5,ny-.5);
+const geometry=Math.sin(phi*4+t*1.13)+Math.cos(rad*19-t*.77)+Math.sin(t*.31+playCount*1.618);
+const idx=((Math.floor(nx*7+ny*5+geometry*2.3+playCount*.71)%cfg.scale.length)+cfg.scale.length)%cfg.scale.length;
+const oct=ny<.27?2:ny<.63?1:0;
+const semitone=cfg.scale[idx]+oct*12;const freq=cfg.root*Math.pow(2,semitone/12);
+const cutoff=clamp(950+(1-ny)*2500+motion*420+Math.sin(t*2)*350,450,7800);
+const gain=actx.createGain();const filter=actx.createBiquadFilter();filter.type='lowpass';filter.frequency.setValueAtTime(cutoff,now);filter.Q.value=mode===1?4.8:mode===2?1.9:2.2;
+const pan=actx.createStereoPanner?actx.createStereoPanner():null;if(pan){pan.pan.value=clamp((nx-.5)*1.8,-.95,.95);gain.connect(filter);filter.connect(pan);pan.connect(dry);pan.connect(echo);}else{gain.connect(filter);filter.connect(dry);filter.connect(echo);}
+const a=quiet?.016:.034,b=quiet?.033:.093;const dur=mode===1?.72:mode===2?.32:.51;
+gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(a,now+.014);gain.gain.exponentialRampToValueAtTime(b,now+.048);gain.gain.exponentialRampToValueAtTime(.00015,now+dur+random(.05,.16));
+const o1=actx.createOscillator();o1.type=cfg.wave;o1.frequency.setValueAtTime(freq,now);if(mode===1)o1.frequency.exponentialRampToValueAtTime(freq*1.006,now+.16);o1.connect(gain);o1.start(now);o1.stop(now+dur+.28);
+const o2=actx.createOscillator(),g2=actx.createGain();o2.type=mode===2?'square':'sine';o2.frequency.setValueAtTime(freq*(mode===1?2.004:mode===2?.5:1.501),now);g2.gain.value=mode===2?.08:.21;o2.connect(g2);g2.connect(gain);o2.start(now);o2.stop(now+dur+.28);
+if(mode===1){const bell=actx.createOscillator(),bg=actx.createGain();bell.type='sine';bell.frequency.setValueAtTime(freq*3.99,now);bg.gain.value=.13;bell.connect(bg);bg.connect(gain);bell.start(now);bell.stop(now+dur+.28);}
+playCount++;noteName.textContent=pitchName(freq);noteMode.textContent='MODE '+cfg.name;
+}
+function trigger(px,py,motion=0,quiet=false){unlockAudio();if(!firstTouch){firstTouch=true;hint.classList.add('quiet');}const nx=clamp(px/w,0,1),ny=clamp(py/h,0,1);playNote(nx,ny,motion,quiet);const hue=MODES[mode].hue+random(-30,30);pulses.push({x:px,y:py,life:1,hue,r:random(9,27)});for(let i=0;i<(quiet?3:8);i++)sparkles.push({x:px,y:py,vx:random(-2.7,2.7),vy:random(-2.7,2.7),r:random(1.1,3),life:random(.5,1),hue});ripples.push({x:px,y:py,life:1,size:12});if(pulses.length>45)pulses.splice(0,pulses.length-45);if(sparkles.length>230)sparkles.splice(0,sparkles.length-230);if(ripples.length>40)ripples.splice(0,ripples.length-40);}
+function rotateX(v,a){const sn=Math.sin(a),cs=Math.cos(a);return{x:v.x,y:v.y*cs-v.z*sn,z:v.y*sn+v.z*cs}}
+function rotateY(v,a){const sn=Math.sin(a),cs=Math.cos(a);return{x:v.x*cs+v.z*sn,y:v.y,z:-v.x*sn+v.z*cs}}
+function rotateZ(v,a){const sn=Math.sin(a),cs=Math.cos(a);return{x:v.x*cs-v.y*sn,y:v.x*sn+v.y*cs,z:v.z}}
+function turn(v){let q=rotateX(v,rotation.x+Math.sin(t*.31)*.08);q=rotateY(q,rotation.y+t*.13);return rotateZ(q,rotation.z+Math.sin(t*.2)*.04)}
+function project(v){const v2=turn(v),perspective=7.5/(7.5-v2.z);return{x:centerX+v2.x*unit*perspective,y:centerY+v2.y*unit*perspective,z:v2.z,p:perspective}}
+function H(hue,a=1,s=88,l=68){return`hsla(${((hue%360)+360)%360},${s}%,${l}%,${a})`}
+const edges=[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+const cubes=Array.from({length:34},(_,i)=>{const phi=i*2.39996,the=Math.acos(1-2*(i+.5)/34);const r=random(1.8,2.62);return{base:{x:Math.sin(the)*Math.cos(phi)*r,y:Math.cos(the)*r,z:Math.sin(the)*Math.sin(phi)*r},size:random(.085,.25),phase:random(0,TAU),speed:random(.2,.9),hue:random(-28,45)}});
+const nodes=Array.from({length:115},(_,i)=>{const a=i*2.399963,the=Math.acos(1-2*(i+.5)/115);return{v:{x:Math.sin(the)*Math.cos(a)*2.13,y:Math.cos(the)*2.13,z:Math.sin(the)*Math.sin(a)*2.13},s:random(1,2.5),phase:random(0,TAU)}});
+function drawBackground(){const bg=c.createRadialGradient(centerX,centerY,20,centerX,centerY,Math.max(w,h)*.8);bg.addColorStop(0,'#101334');bg.addColorStop(.4,'#090c24');bg.addColorStop(1,'#050713');c.fillStyle=bg;c.fillRect(0,0,w,h);
+const e=c.createRadialGradient(centerX,centerY,0,centerX,centerY,unit*3);e.addColorStop(0,H(MODES[mode].hue,.095));e.addColorStop(.38,H(245,.06));e.addColorStop(1,'transparent');c.fillStyle=e;c.fillRect(centerX-unit*3,centerY-unit*3,unit*6,unit*6);
+for(const p of starfield){const a=.15+.3*(.5+.5*Math.sin(t*p.depth+p.phase));c.fillStyle=`rgba(174,201,249,${a})`;c.beginPath();c.arc(p.x+Math.sin(t*.08+p.phase)*3,p.y,p.r,0,TAU);c.fill();}
+}
+function addSeg(bucket,a,b,hue=180,opacity=.5,width=1.2,glow=false){bucket.push({a:project(a),b:project(b),hue,opacity,width,glow})}
+function drawSegments(segs){segs.sort((a,b)=>(a.a.z+a.b.z)-(b.a.z+b.b.z));c.lineCap='round';for(const s of segs){const z=(s.a.z+s.b.z)*.5;const a=s.opacity*clamp(.5+z*.23,.22,1.13);c.strokeStyle=H(s.hue,a,85,clamp(61+z*4,45,85));c.lineWidth=s.width*clamp((s.a.p+s.b.p)*.5,.6,1.75);c.beginPath();c.moveTo(s.a.x,s.a.y);c.lineTo(s.b.x,s.b.y);c.stroke();}}
+function drawScene(){const seg=[];const hue=MODES[mode].hue;const beat=Math.max(0,Math.sin(t*3.3))*0.055;
+// Optical illusion: nested rings intersect in a constantly morphing 3D space.
+for(let ring=0;ring<11;ring++){const count=76,tilt=(ring-5)*.30+t*(ring%2?-0.07:.045),radius=1.16+ring*.105,phase=ring*.61+t*(ring%3===0?.34:-.16);let prev=null;for(let j=0;j<=count;j++){const angle=j/count*TAU,warp=.10*Math.sin(6*angle+t*(ring%2?1.3:-1.4)+ring*.71)+beat;let p={x:(radius+warp)*Math.cos(angle),y:(radius+warp)*Math.sin(angle),z:0};p=rotateX(p,tilt);p=rotateY(p,phase);p=rotateZ(p,ring*.24);if(prev)addSeg(seg,prev,p,hue+(ring%4)*25+Math.sin(t+ring)*25,ring%2===0?.69:.36,ring%3===0?1.95:1.25);prev=p;}}
+// Subtle spherical geometric longitude and latitude wires.
+for(let j=0;j<10;j++){let prev=null;for(let k=0;k<=48;k++){const theta=k/48*TAU,lat=(j/10)*Math.PI-Math.PI/2;const p={x:Math.cos(lat)*Math.cos(theta)*1.46,y:Math.sin(lat)*1.46,z:Math.cos(lat)*Math.sin(theta)*1.46};if(prev)addSeg(seg,prev,p,hue+50,.155,.85);prev=p;}}
+for(let j=0;j<9;j++){let prev=null;for(let k=0;k<=40;k++){const phi=k/40*Math.PI;const lng=j/9*TAU;const p={x:Math.sin(phi)*Math.cos(lng)*1.46,y:Math.cos(phi)*1.46,z:Math.sin(phi)*Math.sin(lng)*1.46};if(prev)addSeg(seg,prev,p,hue+50,.155,.9);prev=p;}}
+// Orbiting three-dimensional cubes.
+for(const cube of cubes){const orbit=rotateY(cube.base,t*cube.speed+cube.phase);const drift=Math.sin(t*1.6+cube.phase)*.12;const s=cube.size*(1+drift);const v=[];for(const [x,y,z] of [[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]]){let q=rotateX({x:x*s,y:y*s,z:z*s},t*.55+cube.phase);q=rotateY(q,t*.83+cube.phase);q=rotateZ(q,t*.3);v.push({x:orbit.x+q.x,y:orbit.y+q.y,z:orbit.z+q.z});}
+for(const [a,b] of edges)addSeg(seg,v[a],v[b],hue+cube.hue,.36+Math.max(0,orbit.z)*.11,1.25);}
+drawSegments(seg);
+// Glassy center, gradients and caustic curves.
+const core=project({x:0,y:0,z:0}),r=Math.max(w<650?49:58,unit*.6)*(1+Math.sin(t*2.2)*.018+beat*.2);
+let halo=c.createRadialGradient(core.x,core.y,0,core.x,core.y,r*2.35);halo.addColorStop(0,H(hue,.42,85,65));halo.addColorStop(.2,H(hue,.23,88,54));halo.addColorStop(.45,H(hue+55,.07));halo.addColorStop(1,'transparent');c.fillStyle=halo;c.beginPath();c.arc(core.x,core.y,r*2.35,0,TAU);c.fill();
+let orb=c.createRadialGradient(core.x-r*.42,core.y-r*.55,r*.04,core.x,core.y,r*1.3);orb.addColorStop(0,H(hue+60,.35,80,87));orb.addColorStop(.25,'#222451');orb.addColorStop(.63,'#090e31');orb.addColorStop(.84,H(hue+35,.33,90,35));orb.addColorStop(1,H(hue,.9,80,72));c.fillStyle=orb;c.beginPath();c.arc(core.x,core.y,r,0,TAU);c.fill();c.lineWidth=1.8;c.strokeStyle=H(hue,.72);c.stroke();
+for(let i=0;i<4;i++){const a=t*(i%2?-.3:.35)+i*1.15;c.strokeStyle=H(hue+i*23,.35);c.lineWidth=1.25;c.beginPath();c.ellipse(core.x,core.y,r*(.45+i*.12),r*(.93-i*.11),a,0,TAU);c.stroke();}
+const inner=c.createRadialGradient(core.x-r*.2,core.y-r*.25,0,core.x,core.y,r*.7);inner.addColorStop(0,H(hue+80,.35));inner.addColorStop(1,'transparent');c.fillStyle=inner;c.beginPath();c.arc(core.x,core.y,r*.75,0,TAU);c.fill();
+// Floating bright intersections suggest near and far depth.
+for(const nd of nodes){const q=project(nd.v);const depth=clamp((q.z+2.2)/4.4,.12,1),pulse=.65+.35*Math.sin(t*2+nd.phase);const rr=nd.s*q.p*(.7+depth*.5)*pulse;c.fillStyle=H(hue+nd.phase*12,depth*.8,95,73);c.beginPath();c.arc(q.x,q.y,rr,0,TAU);c.fill();}}
+function drawEffects(dt){for(let i=ripples.length-1;i>=0;i--){const p=ripples[i];p.life-=dt*.9;if(p.life<=0){ripples.splice(i,1);continue}c.beginPath();c.arc(p.x,p.y,12+(1-p.life)*100,0,TAU);c.strokeStyle=H(MODES[mode].hue,p.life*.35);c.lineWidth=2*p.life;c.stroke();}
+for(let i=pulses.length-1;i>=0;i--){const p=pulses[i];p.life-=dt*1.5;if(p.life<=0){pulses.splice(i,1);continue}const r=p.r*(2.5-p.life);const g=c.createRadialGradient(p.x,p.y,0,p.x,p.y,r);g.addColorStop(0,H(p.hue,p.life*.46));g.addColorStop(.3,H(p.hue,p.life*.21));g.addColorStop(1,'transparent');c.fillStyle=g;c.beginPath();c.arc(p.x,p.y,r,0,TAU);c.fill();}
+for(let i=sparkles.length-1;i>=0;i--){const p=sparkles[i];p.life-=dt*.85;if(p.life<=0){sparkles.splice(i,1);continue}p.x+=p.vx*dt*50;p.y+=p.vy*dt*50;c.fillStyle=H(p.hue,p.life*.8,93,78);c.beginPath();c.arc(p.x,p.y,p.r*p.life,0,TAU);c.fill();}}
+function loop(timestamp){const dt=clamp((timestamp-last)/1000,.001,.06);last=timestamp;if(!isPaused){t+=dt;velocity.x*=.96;velocity.y*=.96;rotation.x+=velocity.x*dt;rotation.y+=velocity.y*dt;rotation.x=clamp(rotation.x,-2.5,2.5);}drawBackground();drawScene();drawEffects(isPaused?0:dt);
+if(autoOn&&actx&&!isPaused&&timestamp-lastAuto>Math.max(180,410-70*mode)){lastAuto=timestamp;globalBeat++;const x=.5+.34*Math.sin(globalBeat*2.3999),y=.5+.31*Math.cos(globalBeat*.91);playNote(x,y,.3,true);const px=x*w,py=y*h;ripples.push({x:px,y:py,life:.7,size:12});}
+requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+function down(e){if(e.target!==canvas)return;e.preventDefault();try{canvas.setPointerCapture(e.pointerId);}catch(_){}activePointers.set(e.pointerId,{x:e.clientX,y:e.clientY,last:0});trigger(e.clientX,e.clientY,0,false);}
+function move(e){const p=activePointers.get(e.pointerId);if(!p)return;e.preventDefault();const dx=e.clientX-p.x,dy=e.clientY-p.y;p.x=e.clientX;p.y=e.clientY;const speed=Math.hypot(dx,dy);rotation.y+=dx*.0057;rotation.x+=dy*.0057;velocity.y=dx*.035;velocity.x=dy*.035;const now=performance.now();const interval=mode===2?72:mode===1?96:83;if(now-p.last>interval&&speed>1.5){trigger(p.x,p.y,clamp(speed/24,0,2),false);p.last=now;}}
+function up(e){activePointers.delete(e.pointerId)}
+canvas.addEventListener('pointerdown',down,{passive:false});canvas.addEventListener('pointermove',move,{passive:false});canvas.addEventListener('pointerup',up);canvas.addEventListener('pointercancel',up);
+for(const b of modeButtons)b.addEventListener('click',()=>{mode=Number(b.dataset.mode);modeButtons.forEach((el,i)=>{el.classList.toggle('active',i===mode);el.setAttribute('aria-pressed',String(i===mode));});noteMode.textContent='MODE '+MODES[mode].name;unlockAudio();trigger(w*.5,h*.47,.2,false);});
+autoButton.addEventListener('click',()=>{unlockAudio();autoOn=!autoOn;autoButton.classList.toggle('selected',autoOn);autoButton.setAttribute('aria-pressed',String(autoOn));autoButton.title=autoOn?'Arrêter la mélodie automatique':'Activer la mélodie automatique';lastAuto=0;if(autoOn){firstTouch=true;hint.classList.add('quiet');}});
+pauseButton.addEventListener('click',()=>{isPaused=!isPaused;pauseButton.textContent=isPaused?'▶':'⏸';pauseButton.classList.toggle('selected',isPaused);pauseButton.setAttribute('aria-pressed',String(isPaused));pauseButton.title=isPaused?'Reprendre les mouvements':'Arrêter les mouvements';});
+volumeControl.addEventListener('input',()=>{volume=Number(volumeControl.value)/100;if(master&&actx)master.gain.setTargetAtTime(volume*.68,actx.currentTime,.02);});
+addEventListener('keydown',e=>{if(e.target===volumeControl)return;if(e.code==='Space'){e.preventDefault();trigger(random(.25*w,.75*w),random(.25*h,.65*h),.3,false);}if(e.code==='ArrowLeft')rotation.y-=.2;if(e.code==='ArrowRight')rotation.y+=.2;if(e.code==='ArrowUp')rotation.x-=.2;if(e.code==='ArrowDown')rotation.x+=.2;});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){activePointers.clear();}last=performance.now();});
+})();
+</script>
+</body>
+</html>
