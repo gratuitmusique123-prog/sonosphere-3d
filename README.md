@@ -1,18 +1,38 @@
-# SONOSPHÈRE 🎶
+# SONOSPHÈRE 3D 🎻
 
-Instrument audiovisuel interactif en HTML, CSS et JavaScript natif.
+Instrument audiovisuel interactif en **HTML + CSS + JavaScript**. Le **code du site est dans `index.html`**. Ce fichier contient l'interface, l'animation 3D et le moteur audio (Web Audio API), y compris le mode **VIOLON**.
 
-Une illusion d'optique animée : orbes, cubes et anneaux en mouvement. Bougez votre doigt ou la souris pour générer des notes dont le timbre et la hauteur évoluent en fonction du geste et du temps. Trois modes : Orbite, Cristal et Pulse.
+## Télécharger et jouer en local (Windows 10 / Windows 11)
 
-## Utilisation
+**Sans installation, sans compte et sans Internet une fois les fichiers téléchargés.**
 
-Ouvrez `index.html` dans un navigateur moderne. Touchez la sphère pour activer le son. Aucune dépendance ni installation nécessaire.
+1. [Télécharger le projet en ZIP](https://github.com/gratuitmusique123-prog/sonosphere-3d/archive/refs/heads/main.zip).
+2. Cliquer avec le bouton droit sur le fichier ZIP puis **Extraire tout**.
+3. Dans le dossier extrait, **double-cliquer sur `index.html`** : le site s'ouvre dans Edge, Chrome ou Firefox.
+4. **Cliquer dans l'animation pour activer le son.** Le navigateur demande un geste pour démarrer la synthèse audio.
+5. Cliquer sur **🎻 VIOLON**, garder le bouton de souris enfoncé et glisser pour changer la note. Sur un écran tactile, poser et déplacer le doigt.
 
-## Mise en ligne avec GitHub Pages
+Il n'est pas nécessaire d'installer Node.js, Python, de compiler, de démarrer un serveur local ni d'utiliser une API.
 
-1. Créer un dépôt **public** sur GitHub.
-2. Ajouter à sa racine les fichiers `index.html` et `README.md`.
-3. Dans **Settings → Pages → Build and deployment**, sélectionner **Deploy from a branch**, `main`, puis `/ (root)` et enregistrer.
-4. Site accessible en général sur `https://VOTRE_PSEUDO.github.io/NOM_DU_DEPOT/` après déploiement.
+## Sons et modes
 
-Ce projet fonctionne intégralement dans le navigateur avec Canvas 2D et Web Audio ; les effets visuels simulent un environnement 3D.
+- **ORBITE** : notes spatiales douces.
+- **CRISTAL** : sons cristallins.
+- **PULSE** : synthèse rythmique.
+- **🎻 VIOLON** : simulation de cordes frottées, vibrato et glissement entre les notes.
+
+Les notes sont synthétisées **sur l'appareil**, pas téléchargées depuis Internet. Il s'agit d'un violon électronique synthétique, pas d'un échantillon enregistré d'un vrai instrument. Le bouton ♫ déclenche la mélodie automatique.
+
+## Code source
+
+- [Ouvrir `index.html`](https://github.com/gratuitmusique123-prog/sonosphere-3d/blob/main/index.html)
+- [Télécharger uniquement le fichier HTML](https://raw.githubusercontent.com/gratuitmusique123-prog/sonosphere-3d/main/index.html)
+- [Télécharger tout le dépôt en ZIP](https://github.com/gratuitmusique123-prog/sonosphere-3d/archive/refs/heads/main.zip)
+
+## Version en ligne
+
+[SONOSPHÈRE 3D sur Base44](https://sonosphere-3-d-3329cced.base44.app/) (publication publique). La publication GitHub Pages n'est actuellement pas activée, mais cela **n'empêche pas** l'utilisation locale depuis `index.html`.
+
+## Licence et dépendances
+
+Ce prototype n'utilise pas de bibliothèque distante, de modèle d'IA, de serveur audio ou de CDN. L'ensemble de la synthèse tourne dans le navigateur avec Canvas et Web Audio.
