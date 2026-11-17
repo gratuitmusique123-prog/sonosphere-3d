@@ -29,6 +29,12 @@ Les notes sont synthétisées **sur l'appareil**, pas téléchargées depuis Int
 - [Télécharger uniquement le fichier HTML](https://raw.githubusercontent.com/gratuitmusique123-prog/sonosphere-3d/main/index.html)
 - [Télécharger tout le dépôt en ZIP](https://github.com/gratuitmusique123-prog/sonosphere-3d/archive/refs/heads/main.zip)
 
+## 🎻 Jouer maintenant directement depuis les fichiers GitHub
+
+[**🎶 Ouvrir SONOSPHÈRE 3D (aperçu interactif des fichiers GitHub)**](https://raw.githack.com/gratuitmusique123-prog/sonosphere-3d/main/index.html)
+
+Ce lien utilise **raw.githack.com**, un service tiers qui affiche le vrai fichier `index.html` stocké dans ce dépôt, en HTML interactif. Aucune compilation n'est nécessaire. Au premier chargement, raw.githack peut afficher une **page de confirmation** avant d'autoriser l'interface. Ce n'est pas le site GitHub Pages officiel.
+
 ## 🌍 Publication officielle sur GitHub Pages
 
 La page du jeu est déjà le fichier `index.html` situé à la racine de la branche `main`. Il faut seulement activer GitHub Pages UNE FOIS sur GitHub, comme ceci :
