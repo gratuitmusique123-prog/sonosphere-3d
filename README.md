@@ -29,6 +29,17 @@ Les notes sont synthétisées **sur l'appareil**, pas téléchargées depuis Int
 - [Télécharger uniquement le fichier HTML](https://raw.githubusercontent.com/gratuitmusique123-prog/sonosphere-3d/main/index.html)
 - [Télécharger tout le dépôt en ZIP](https://github.com/gratuitmusique123-prog/sonosphere-3d/archive/refs/heads/main.zip)
 
+## 🌍 Publication officielle sur GitHub Pages
+
+La page du jeu est déjà le fichier `index.html` situé à la racine de la branche `main`. Il faut seulement activer GitHub Pages UNE FOIS sur GitHub, comme ceci :
+
+1. Ouvrir [Settings → Pages](https://github.com/gratuitmusique123-prog/sonosphere-3d/settings/pages) en étant connecté au compte propriétaire.
+2. Dans **Build and deployment → Source**, choisir **Deploy from a branch**.
+3. Dans **Branch**, choisir **main**, puis **/(root)**, et cliquer sur **Save**.
+4. Une fois GitHub Pages publié, le jeu s'ouvre sans compte à **https://gratuitmusique123-prog.github.io/sonosphere-3d/**.
+
+Le site ne demande ni serveur, ni compilation, ni déploiement GitHub Actions. Le fichier `index.html` suffit. Si la page affiche 404 avant l'activation, c'est normal : mettre un dépôt en public ne suffit pas à activer GitHub Pages.
+
 ## Version en ligne
 
 [SONOSPHÈRE 3D sur Base44](https://sonosphere-3-d-3329cced.base44.app/) (publication publique). La publication GitHub Pages n'est actuellement pas activée, mais cela **n'empêche pas** l'utilisation locale depuis `index.html`.
